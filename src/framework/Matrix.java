@@ -51,7 +51,7 @@ public class Matrix {
 
 	// Construct a matrix of zeros with r rows and c columns
 	public Matrix(int r, int c) {
-		// Constructor
+		// If invalid input, a null object is created with Validity set to false
 		if (IsSizeValid(r,c)) {
 
 			setRow(r);
@@ -63,7 +63,7 @@ public class Matrix {
 
 	// Construct a matrix r rows and c columns with a repeated value
 	public Matrix(int r, int c, double elementValue) {
-		// Constructor
+		// If invalid input, a null object is created with Validity set to false
 		if(IsSizeValid(r,c)) {
 
 			setRow(r);
@@ -82,7 +82,7 @@ public class Matrix {
 
 	// Construct a matrix with a given 2-D array grid
 	public Matrix(double[][] grid) {
-		// Constructor
+		// If invalid input, a null object is created with Validity set to false
 		if(IsSizeValid(grid.length, grid[0].length) && IsGridValid(grid)) {
 
 			setRow(grid.length);
@@ -99,85 +99,98 @@ public class Matrix {
 	// Add new element to the grid at (x,y)
 	// Returns false if the grid coordinates (x,y) did not exist
 	public boolean AddElement(int posX, int posY, double value) {
+		if(this.getValidity()) {
 
-		try {
-			grid[posX][posY] = value;
-		} catch (IndexOutOfBoundsException e) {;
-		return false;
+			try {
+				grid[posX][posY] = value;
+			} catch (IndexOutOfBoundsException e) {;
+			return false;
+			}
+
+			return true;
 		}
-
-		return true;
+		return false;
 	}
 
 	// Removes element at (x,y) in the grid
 	// Returns false if the grid coordinates (x,y) did not exist
 	public boolean RemoveElement(int posX, int posY) {
+		if(this.getValidity()) {
 
-		try {
-			grid[posX][posY] = 0;
-		} catch (IndexOutOfBoundsException e) {
-			return false;
+			try {
+				grid[posX][posY] = 0;
+			} catch (IndexOutOfBoundsException e) {
+				return false;
+			}
+
+			return true;
 		}
-
-		return true;
+		return false;
 	}
 
 	// Change row, column and grid size
 	public boolean ChangeSize(int newR, int newC) {
-		int oldCol = getColumn();
-		int oldRow = getRow();
-		double[][] oldGrid = getGrid();
-		double[][] newGrid = new double[newR][newC];
+		if(this.getValidity()) {
 
-		// Check for the smallest r,c pair and set that as the limit
-		// Always cycle till the smallest limit otherwise the array will overflow
-		if (newR >= oldRow || newC >= oldCol) {
+			int oldCol = getColumn();
+			int oldRow = getRow();
+			double[][] oldGrid = getGrid();
+			double[][] newGrid = new double[newR][newC];
 
-			// Simple cyclic increment
-			// Cycle through the row for each column	
-			for(int ro = 0; ro < oldRow; ro++) {
-				for (int col = 0; col < oldCol; col++) {
-					newGrid[ro][col] = oldGrid[ro][col];
-				}// --Column loop end
-			}// --Row loop end
+			// Check for the smallest r,c pair and set that as the limit
+			// Always cycle till the smallest limit otherwise the array will overflow
+			if (newR >= oldRow || newC >= oldCol) {
 
-		} else {
+				// Simple cyclic increment
+				// Cycle through the row for each column	
+				for(int ro = 0; ro < oldRow; ro++) {
+					for (int col = 0; col < oldCol; col++) {
+						newGrid[ro][col] = oldGrid[ro][col];
+					}// --Column loop end
+				}// --Row loop end
 
-			// Simple cyclic increment
-			// Cycle through the row for each column	
-			for(int ro = 0; ro < newR; ro++) {
-				for (int col = 0; col < newC; col++) {
-					newGrid[ro][col] = oldGrid[ro][col];
-				}// --Column loop end
-			}// --Row loop end
+			} else {
 
+				// Simple cyclic increment
+				// Cycle through the row for each column	
+				for(int ro = 0; ro < newR; ro++) {
+					for (int col = 0; col < newC; col++) {
+						newGrid[ro][col] = oldGrid[ro][col];
+					}// --Column loop end
+				}// --Row loop end
+
+			}
+			if(IsSizeValid(newR, newC)) {
+				setRow(row);
+				setColumn(column);
+				setGrid(newGrid);
+				return true;
+			}
 		}
-		if(IsSizeValid(newR, newC)) {
-			setRow(row);
-			setColumn(column);
-			setGrid(newGrid);
-			return true;
-		} else
-			return false;
+		return false;
 	}
 
 	// Swap rows with columns and update the element list
 	public boolean Transpose() {
-		double[][] Matrix = getGrid();
-		double[][] newGrid = new double[column][row];
+		if(this.getValidity()) {
 
-		// Simple cyclic increment
-		// Cycle through the row for each column
-		for(int ro = 0; ro < row; ro++) {
-			for (int col = 0; col < column; col++) {
-				newGrid[col][ro] = Matrix[ro][col];
-			}// --Column loop end
-		}// --Row loop end
+			double[][] Matrix = getGrid();
+			double[][] newGrid = new double[column][row];
 
-		setRow(column);
-		setColumn(row);
-		setGrid(newGrid);
-		return true;
+			// Simple cyclic increment
+			// Cycle through the row for each column
+			for(int ro = 0; ro < row; ro++) {
+				for (int col = 0; col < column; col++) {
+					newGrid[col][ro] = Matrix[ro][col];
+				}// --Column loop end
+			}// --Row loop end
+
+			setRow(column);
+			setColumn(row);
+			setGrid(newGrid);
+			return true;
+		}
+		return false;
 	}
 
 	/* ------------------------
