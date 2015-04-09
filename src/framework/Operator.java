@@ -1,21 +1,28 @@
 package framework;
 
-// index: 1-Plus; 2-Minus; 3-Multiply; 4-Divide;
+import framework.Matrix;
+
 public class Operator {
+	
+/* ------------------------
+	   Class variables
+ * ------------------------ */
+	
+	private static Matrix error = new Matrix(-1,-1);
 
-	// private Matrix result;
-	// private Matrix error = null;
+/* ------------------------
+	   Public Methods
+ * ------------------------ */
 
-	public Matrix Plus(Matrix leftMatrix, Matrix rightMatrix) {
+	public static Matrix Plus(Matrix leftMatrix, Matrix rightMatrix) {
 		// local data for easier use
 		int lRow = leftMatrix.getRow();
 		int lColumn = leftMatrix.getColumn();
-		int rRow = leftMatrix.getRow();
-		int rColumn = leftMatrix.getColumn();
+		int rRow = rightMatrix.getRow();
+		int rColumn = rightMatrix.getColumn();
 
 		// Addition/Subtraction can only be performed on similar matrices
 		if(lRow == rRow && lColumn == rColumn) {
-			Matrix result = new Matrix(lRow, lColumn);
 
 			// Matrix grid extraction for the operation
 			double[][] newGrid = new double[lRow][lColumn];
@@ -29,22 +36,21 @@ public class Operator {
 				}// --Column loop end
 			}// --Row loop end
 
-			result.setGrid(newGrid);
+			Matrix result = new Matrix(newGrid);
 			return result;
 		}
-		return null;
+		return error;
 	}
 
-	public Matrix Minus(Matrix leftMatrix, Matrix rightMatrix) {
+	public static Matrix Minus(Matrix leftMatrix, Matrix rightMatrix) {
 		// local data for easier use
 		int lRow = leftMatrix.getRow();
 		int lColumn = leftMatrix.getColumn();
-		int rRow = leftMatrix.getRow();
-		int rColumn = leftMatrix.getColumn();
+		int rRow = rightMatrix.getRow();
+		int rColumn = rightMatrix.getColumn();
 
 		// Addition/Subtraction can only be performed on similar matrices
 		if(lRow == rRow && lColumn == rColumn) {
-			Matrix result = new Matrix(lRow, lColumn);
 
 			// Matrix grid extraction for the operation
 			double[][] newGrid = new double[lRow][lColumn];
@@ -58,20 +64,19 @@ public class Operator {
 				}// --Column loop end
 			}// --Row loop end
 
-			result.setGrid(newGrid);
+			Matrix result = new Matrix(newGrid);
 			return result;
 		}
-		return null;
+		return error;
 	}
 
-	public Matrix Multiply(Matrix leftMatrix, Matrix rightMatrix) {
+	public static Matrix Multiply(Matrix leftMatrix, Matrix rightMatrix) {
 		int lRow = leftMatrix.getRow();
 		int lColumn = leftMatrix.getColumn();
-		int rRow = leftMatrix.getRow();
-		int rColumn = leftMatrix.getColumn();
+		int rRow = rightMatrix.getRow();
+		int rColumn = rightMatrix.getColumn();
 
 		if(lColumn == rRow) {
-			Matrix result = new Matrix(lColumn, rRow);
 
 			// Matrix grid extraction for the operation
 			double[][] newGrid = new double[lRow][rColumn];
@@ -87,21 +92,20 @@ public class Operator {
 				}// --Column loop end
 			}// --Row loop end
 			
-			result.setGrid(newGrid);
+			Matrix result = new Matrix(newGrid);
 			return result;
 		}
-		return null;
+		return error;
 	}
 
-	public Matrix Divide(Matrix leftMatrix, Matrix rightMatrix) {
+	public static Matrix Divide(Matrix leftMatrix, Matrix rightMatrix) {
 		// local data for easier use
 		int lRow = leftMatrix.getRow();
 		int lColumn = leftMatrix.getColumn();
-		int rRow = leftMatrix.getRow();
-		int rColumn = leftMatrix.getColumn();
+		int rRow = rightMatrix.getRow();
 
 		// Addition/Subtraction can only be performed on similar matrices
-		if(lRow == rRow && lColumn == rColumn) {
+		if(lColumn == rRow) {
 			// Matrix grid extraction for the operation
 			double[][] newGrid = new double[lRow][lColumn];
 			double[][] rightGrid = rightMatrix.getGrid();
@@ -114,9 +118,9 @@ public class Operator {
 			}// --Row loop end
 
 			// Forwards operation after preparing the rightMatrix
-			rightMatrix.setGrid(newGrid);
-			return Multiply(leftMatrix, rightMatrix);
+			Matrix result = new Matrix(newGrid);
+			return Multiply(leftMatrix, result);
 		}
-		return null;
+		return error;
 	}
 }
