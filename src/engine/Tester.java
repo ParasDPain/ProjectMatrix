@@ -2,6 +2,7 @@ package engine;
 
 import java.util.Scanner;
 
+import framework.Edit;
 import framework.Matrix;
 import framework.Operator;
 
@@ -11,11 +12,11 @@ public class Tester {
 
 		Scanner scanner = new Scanner (System.in);
 		Matrix m = inputMatrix(scanner);
-		Matrix n = inputMatrix(scanner);
 		displayMatrix(m);
+		Matrix n = Edit.Transpose(m);
 		displayMatrix(n);
-		
-		test_Operations(m,n);
+		test_ChangeSize(scanner,n);
+		displayMatrix(n);
 
 		scanner.close();
 
@@ -40,10 +41,9 @@ public class Tester {
 	@SuppressWarnings("unused")
 	private static void test_Transpose(Matrix m) {
 		System.out.println("TRANSPOSE");
-		m.Transpose();
+		Edit.Transpose(m);
 	}
 
-	@SuppressWarnings("unused")
 	private static void test_ChangeSize(Scanner scanner, Matrix m) {
 		// Change grid size
 		System.out.println("Enter the new row size: ");
@@ -55,7 +55,6 @@ public class Tester {
 	}
 
 	// Input and Initialize matrix instance
-	@SuppressWarnings("unused")
 	private static Matrix inputMatrix(Scanner scanner) {
 		Matrix m;
 		// Initialize matrix object
@@ -91,7 +90,7 @@ public class Tester {
 	// Display object instance
 	private static void displayMatrix(Matrix m) {
 		if(m.getValidity()) {
-			
+
 			double[][] myMatrix = m.getGrid();
 			int row = m.getRow();
 			int column = m.getColumn();
@@ -104,7 +103,7 @@ public class Tester {
 
 				System.out.println();
 			}// --Row loop end
-			
+
 		} else System.out.println("The matrix was invalidated.");
 	}
 

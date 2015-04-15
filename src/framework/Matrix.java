@@ -139,11 +139,31 @@ public class Matrix {
 
 			// Check for the smallest r,c pair and set that as the limit
 			// Always cycle till the smallest limit otherwise the array will overflow
-			if (newR >= oldRow || newC >= oldCol) {
+			if (newR >= oldRow && newC >= oldCol) {
 
 				// Simple cyclic increment
 				// Cycle through the row for each column	
 				for(int ro = 0; ro < oldRow; ro++) {
+					for (int col = 0; col < oldCol; col++) {
+						newGrid[ro][col] = oldGrid[ro][col];
+					}// --Column loop end
+				}// --Row loop end
+
+			} else if(newR >= oldRow && newC <= oldCol) {
+				
+				// Simple cyclic increment
+				// Cycle through the row for each column	
+				for(int ro = 0; ro < oldRow; ro++) {
+					for (int col = 0; col < newC; col++) {
+						newGrid[ro][col] = oldGrid[ro][col];
+					}// --Column loop end
+				}// --Row loop end
+
+			} else if(newR <= oldRow && newC >= oldCol) {
+				
+				// Simple cyclic increment
+				// Cycle through the row for each column	
+				for(int ro = 0; ro < newR; ro++) {
 					for (int col = 0; col < oldCol; col++) {
 						newGrid[ro][col] = oldGrid[ro][col];
 					}// --Column loop end
@@ -160,35 +180,13 @@ public class Matrix {
 				}// --Row loop end
 
 			}
+
 			if(IsSizeValid(newR, newC)) {
-				setRow(row);
-				setColumn(column);
+				setRow(newR);
+				setColumn(newC);
 				setGrid(newGrid);
 				return true;
 			}
-		}
-		return false;
-	}
-
-	// Swap rows with columns and update the element list
-	public boolean Transpose() {
-		if(this.getValidity()) {
-
-			double[][] Matrix = getGrid();
-			double[][] newGrid = new double[column][row];
-
-			// Simple cyclic increment
-			// Cycle through the row for each column
-			for(int ro = 0; ro < row; ro++) {
-				for (int col = 0; col < column; col++) {
-					newGrid[col][ro] = Matrix[ro][col];
-				}// --Column loop end
-			}// --Row loop end
-
-			setRow(column);
-			setColumn(row);
-			setGrid(newGrid);
-			return true;
 		}
 		return false;
 	}

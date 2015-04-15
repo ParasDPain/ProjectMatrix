@@ -8,7 +8,7 @@ public class Operator {
 	   Class variables
 	 * ------------------------ */
 
-	private static Matrix error = new Matrix(-1,-1);
+	private static Matrix error = new Matrix(0,0);
 
 	/* ------------------------
 	   Public Methods
@@ -96,7 +96,9 @@ public class Operator {
 				// Extended cyclic increment
 				for(int ro = 0; ro < lRow; ro++) {
 					for (int col = 0; col < rColumn; col++) {
-						for (int x = 0; x<lRow; x++) {
+						// X increments till the common r/c value of the matrices
+						// 4x2,2x3 will have product of 4x3 and 2 will be the common value
+						for (int x = 0; x<lColumn; x++) {
 							newGrid[ro][col] += leftGrid[ro][x] * rightGrid[x][col];
 						}// --X loop end
 					}// --Column loop end
@@ -114,19 +116,18 @@ public class Operator {
 		if(leftMatrix.getValidity() && rightMatrix.getValidity()) {
 
 			// local data for easier use
-			int lRow = leftMatrix.getRow();
 			int lColumn = leftMatrix.getColumn();
 			int rRow = rightMatrix.getRow();
+			int rColumn = rightMatrix.getColumn();
 
-			// Addition/Subtraction can only be performed on similar matrices
 			if(lColumn == rRow) {
 				// Matrix grid extraction for the operation
-				double[][] newGrid = new double[lRow][lColumn];
+				double[][] newGrid = new double[rRow][rColumn];
 				double[][] rightGrid = rightMatrix.getGrid();
 
 				// Simple cyclic increment
-				for(int ro = 0; ro < lRow; ro++) {
-					for (int col = 0; col < lColumn; col++) {
+				for(int ro = 0; ro < rRow; ro++) {
+					for (int col = 0; col < rColumn; col++) {
 						newGrid[ro][col] = 1/rightGrid[ro][col];
 					}// --Column loop end
 				}// --Row loop end
