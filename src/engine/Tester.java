@@ -12,10 +12,7 @@ public class Tester {
 
 		Scanner scanner = new Scanner (System.in);
 		Matrix m = inputMatrix(scanner);
-		displayMatrix(m);
-		Matrix n = Edit.Transpose(m);
-		displayMatrix(n);
-		test_ChangeSize(scanner,n);
+		Matrix n = Edit.ScalarProduct(m, 20);
 		displayMatrix(n);
 
 		scanner.close();

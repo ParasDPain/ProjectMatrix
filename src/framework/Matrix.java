@@ -61,25 +61,6 @@ public class Matrix {
 		}
 	}
 
-	// Construct a matrix r rows and c columns with a repeated value
-	public Matrix(int r, int c, double elementValue) {
-		// If invalid input, a null object is created with Validity set to false
-		if(IsSizeValid(r,c)) {
-
-			setRow(r);
-			setColumn(c);
-
-			// Simple cyclic increment
-			// Cycle through the row for each column	
-			for(int ro = 0; ro < row; ro++) {
-				for (int col = 0; column < c; col++) {
-					grid[ro][col] = elementValue;
-				}// --Column loop end
-			}// --Row loop end
-		}
-
-	}
-
 	// Construct a matrix with a given 2-D array grid
 	public Matrix(double[][] grid) {
 		// If invalid input, a null object is created with Validity set to false
@@ -88,6 +69,51 @@ public class Matrix {
 			setRow(grid.length);
 			setColumn(grid[0].length);
 			setGrid(grid);
+		}
+
+	}
+
+	// Direct use of private grid is not working #FindOutDamn
+	// Construct a matrix r rows and c columns with a repeated value
+	public Matrix(int r, int c, double elementValue) {
+		// If invalid input, a null object is created with Validity set to false
+		if(IsSizeValid(r,c)) {
+
+			setRow(r);
+			setColumn(c);
+			double[][] newGrid = new double[row][column];
+
+			// Simple cyclic increment
+			// Cycle through the row for each column	
+			for(int ro = 0; ro < row; ro++) {
+				for (int col = 0; col < column; col++) {
+					newGrid[ro][col] = elementValue;
+				}// --Column loop end
+			}// --Row loop end
+
+			setGrid(newGrid);
+		}
+
+	}
+
+	// Construct a square identity matrix with size r
+	public Matrix(int r) {
+		// If invalid input, a null object is created with Validity set to false
+		if(IsSizeValid(r,r)) {
+
+			setRow(r);
+			setColumn(r);
+			double[][] newGrid = new double[row][column];
+
+			// Simple cyclic increment
+			// Cycle through the row for each column	
+			for(int ro = 0; ro < row; ro++) {
+				for (int col = 0; col < column; col++) {
+					newGrid[ro][col] = (ro == col ? 1 : 0);
+				}// --Column loop end
+			}// --Row loop end
+
+			setGrid(newGrid);
 		}
 
 	}
@@ -128,6 +154,20 @@ public class Matrix {
 		return false;
 	}
 
+	// Returns element value at (x,y) in the grid
+	// Returns 0 if the grid coordinates (x,y) do not exist
+	public double GetElement(int posX, int posY) {
+		if(this.getValidity()) {
+
+			try {
+				return grid[posX][posY];
+			} catch (IndexOutOfBoundsException e) {
+				return 0;
+			}
+		}
+		return 0;
+	}
+
 	// Change row, column and grid size
 	public boolean ChangeSize(int newR, int newC) {
 		if(this.getValidity()) {
@@ -150,7 +190,7 @@ public class Matrix {
 				}// --Row loop end
 
 			} else if(newR >= oldRow && newC <= oldCol) {
-				
+
 				// Simple cyclic increment
 				// Cycle through the row for each column	
 				for(int ro = 0; ro < oldRow; ro++) {
@@ -160,7 +200,7 @@ public class Matrix {
 				}// --Row loop end
 
 			} else if(newR <= oldRow && newC >= oldCol) {
-				
+
 				// Simple cyclic increment
 				// Cycle through the row for each column	
 				for(int ro = 0; ro < newR; ro++) {
