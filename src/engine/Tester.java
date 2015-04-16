@@ -1,6 +1,8 @@
 package engine;
 
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.List;
 
 import framework.Edit;
 import framework.Matrix;
@@ -11,15 +13,21 @@ public class Tester {
 	public static void main(String[] args) {
 
 		Scanner scanner = new Scanner (System.in);
-		Matrix m = inputMatrix(scanner);
-		Matrix n = Edit.ScalarProduct(m, 20);
-		displayMatrix(n);
-
+		Matrix m = new Matrix(8);
+		displayMatrix(m);
+		displayMatrix(test_Submatrix(m));
+		
 		scanner.close();
 
 	}
 
-	@SuppressWarnings("unused")
+	private static Matrix test_Submatrix(Matrix m) {
+		List<Integer> listOfRows = Arrays.asList(-1);
+		List<Integer> listOfColumns = Arrays.asList(9);
+		boolean choice = true;
+		return Edit.Submatrix(m, listOfRows, listOfColumns, choice);
+	}
+
 	private static void test_Operations(Matrix m, Matrix n) {
 
 		System.out.println("SUM");
@@ -35,7 +43,6 @@ public class Tester {
 		displayMatrix(Operator.Divide(m,n));
 	}
 
-	@SuppressWarnings("unused")
 	private static void test_Transpose(Matrix m) {
 		System.out.println("TRANSPOSE");
 		Edit.Transpose(m);
@@ -89,8 +96,8 @@ public class Tester {
 		if(m.getValidity()) {
 
 			double[][] myMatrix = m.getGrid();
-			int row = m.getRow();
-			int column = m.getColumn();
+			int row = m.getRowSize();
+			int column = m.getColumnSize();
 
 			System.out.println("Your matrix is: ");
 			for (int i=0; i<row; i++) {

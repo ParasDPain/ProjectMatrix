@@ -19,10 +19,10 @@ public class Operator {
 		if(leftMatrix.getValidity() && rightMatrix.getValidity()) {
 
 			// local data for easier use
-			int lRow = leftMatrix.getRow();
-			int lColumn = leftMatrix.getColumn();
-			int rRow = rightMatrix.getRow();
-			int rColumn = rightMatrix.getColumn();
+			int lRow = leftMatrix.getRowSize();
+			int lColumn = leftMatrix.getColumnSize();
+			int rRow = rightMatrix.getRowSize();
+			int rColumn = rightMatrix.getColumnSize();
 
 			// Addition/Subtraction can only be performed on similar matrices
 			if(lRow == rRow && lColumn == rColumn) {
@@ -51,10 +51,10 @@ public class Operator {
 		if(leftMatrix.getValidity() && rightMatrix.getValidity()) {
 
 			// local data for easier use
-			int lRow = leftMatrix.getRow();
-			int lColumn = leftMatrix.getColumn();
-			int rRow = rightMatrix.getRow();
-			int rColumn = rightMatrix.getColumn();
+			int lRow = leftMatrix.getRowSize();
+			int lColumn = leftMatrix.getColumnSize();
+			int rRow = rightMatrix.getRowSize();
+			int rColumn = rightMatrix.getColumnSize();
 
 			// Addition/Subtraction can only be performed on similar matrices
 			if(lRow == rRow && lColumn == rColumn) {
@@ -81,10 +81,10 @@ public class Operator {
 	// Returns an invalid Matrix if the caller is sending invalid data
 	public static Matrix Multiply(Matrix leftMatrix, Matrix rightMatrix) {
 		if(leftMatrix.getValidity() && rightMatrix.getValidity()) {
-			int lRow = leftMatrix.getRow();
-			int lColumn = leftMatrix.getColumn();
-			int rRow = rightMatrix.getRow();
-			int rColumn = rightMatrix.getColumn();
+			int lRow = leftMatrix.getRowSize();
+			int lColumn = leftMatrix.getColumnSize();
+			int rRow = rightMatrix.getRowSize();
+			int rColumn = rightMatrix.getColumnSize();
 
 			if(lColumn == rRow) {
 
@@ -116,9 +116,9 @@ public class Operator {
 		if(leftMatrix.getValidity() && rightMatrix.getValidity()) {
 
 			// local data for easier use
-			int lColumn = leftMatrix.getColumn();
-			int rRow = rightMatrix.getRow();
-			int rColumn = rightMatrix.getColumn();
+			int lColumn = leftMatrix.getColumnSize();
+			int rRow = rightMatrix.getRowSize();
+			int rColumn = rightMatrix.getColumnSize();
 
 			if(lColumn == rRow) {
 				// Matrix grid extraction for the operation

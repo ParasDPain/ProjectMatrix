@@ -8,21 +8,21 @@ public class Matrix {
 	 * ------------------------ */
 
 	// Private property Row
-	private int row;
-	public int getRow() {
-		return row;
+	private int rowSize;
+	public int getRowSize() {
+		return rowSize;
 	}
-	private void setRow(int value) {
-		this.row = value;
+	private void setRowSize(int value) {
+		this.rowSize = value;
 	}
 
 	// Private property Column
-	private int column;
-	public int getColumn() {
-		return column;
+	private int columnSize;
+	public int getColumnSize() {
+		return columnSize;
 	}
-	private void setColumn(int value) {
-		this.column = value;
+	private void setColumnSize(int value) {
+		this.columnSize = value;
 	}
 
 	// Private property Grid
@@ -54,9 +54,9 @@ public class Matrix {
 		// If invalid input, a null object is created with Validity set to false
 		if (IsSizeValid(r,c)) {
 
-			setRow(r);
-			setColumn(c);
-			double[][] matrix = new double[row][column];
+			setRowSize(r);
+			setColumnSize(c);
+			double[][] matrix = new double[rowSize][columnSize];
 			setGrid(matrix);
 		}
 	}
@@ -66,27 +66,26 @@ public class Matrix {
 		// If invalid input, a null object is created with Validity set to false
 		if(IsSizeValid(grid.length, grid[0].length) && IsGridValid(grid)) {
 
-			setRow(grid.length);
-			setColumn(grid[0].length);
+			setRowSize(grid.length);
+			setColumnSize(grid[0].length);
 			setGrid(grid);
 		}
 
 	}
 
-	// Direct use of private grid is not working #FindOutDamn
 	// Construct a matrix r rows and c columns with a repeated value
 	public Matrix(int r, int c, double elementValue) {
 		// If invalid input, a null object is created with Validity set to false
 		if(IsSizeValid(r,c)) {
 
-			setRow(r);
-			setColumn(c);
-			double[][] newGrid = new double[row][column];
+			setRowSize(r);
+			setColumnSize(c);
+			double[][] newGrid = new double[rowSize][columnSize];
 
 			// Simple cyclic increment
 			// Cycle through the row for each column	
-			for(int ro = 0; ro < row; ro++) {
-				for (int col = 0; col < column; col++) {
+			for(int ro = 0; ro < rowSize; ro++) {
+				for (int col = 0; col < columnSize; col++) {
 					newGrid[ro][col] = elementValue;
 				}// --Column loop end
 			}// --Row loop end
@@ -101,14 +100,14 @@ public class Matrix {
 		// If invalid input, a null object is created with Validity set to false
 		if(IsSizeValid(r,r)) {
 
-			setRow(r);
-			setColumn(r);
-			double[][] newGrid = new double[row][column];
+			setRowSize(r);
+			setColumnSize(r);
+			double[][] newGrid = new double[rowSize][columnSize];
 
 			// Simple cyclic increment
 			// Cycle through the row for each column	
-			for(int ro = 0; ro < row; ro++) {
-				for (int col = 0; col < column; col++) {
+			for(int ro = 0; ro < rowSize; ro++) {
+				for (int col = 0; col < columnSize; col++) {
 					newGrid[ro][col] = (ro == col ? 1 : 0);
 				}// --Column loop end
 			}// --Row loop end
@@ -172,8 +171,8 @@ public class Matrix {
 	public boolean ChangeSize(int newR, int newC) {
 		if(this.getValidity()) {
 
-			int oldCol = getColumn();
-			int oldRow = getRow();
+			int oldCol = getColumnSize();
+			int oldRow = getRowSize();
 			double[][] oldGrid = getGrid();
 			double[][] newGrid = new double[newR][newC];
 
@@ -222,8 +221,8 @@ public class Matrix {
 			}
 
 			if(IsSizeValid(newR, newC)) {
-				setRow(newR);
-				setColumn(newC);
+				setRowSize(newR);
+				setColumnSize(newC);
 				setGrid(newGrid);
 				return true;
 			}
@@ -247,8 +246,8 @@ public class Matrix {
 
 	// Only accepts array grids with equal sized rows
 	private boolean IsGridValid(double[][] grid) {
-		for (int ro=0; ro<row; ro++) {
-			if (grid[ro].length != column) {
+		for (int ro=0; ro<rowSize; ro++) {
+			if (grid[ro].length != columnSize) {
 				setValidity(false);
 				return false;
 			}

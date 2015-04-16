@@ -2,6 +2,9 @@ package framework;
 
 import framework.Matrix;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Edit {
 
 	private static Matrix error = new Matrix(0,0);
@@ -11,8 +14,8 @@ public class Edit {
 		// Pass -1 to change the matrix's sign
 		if(m.getValidity()) {
 
-			int row = m.getRow();
-			int column = m.getColumn();
+			int row = m.getRowSize();
+			int column = m.getColumnSize();
 			double[][] grid = m.getGrid();
 			double[][] newGrid = new double[row][column];
 
@@ -34,8 +37,8 @@ public class Edit {
 	public static Matrix Transpose(Matrix m) {
 		if(m.getValidity()) {
 
-			int row = m.getRow();
-			int column = m.getColumn();
+			int row = m.getRowSize();
+			int column = m.getColumnSize();
 			double[][] grid = m.getGrid();
 			double[][] newGrid = new double[column][row];
 
@@ -53,37 +56,73 @@ public class Edit {
 		return error;
 	}
 
-	// Method can't handle (0,0) due to the limitations in ChangeSize()
-	// Find a better one
-	public static Matrix Submatrix(Matrix m, int delRow, int delColumn) {
-		if(m.getValidity()) {
+	// Removes/Retains any selected number of rows and columns from the Matrix
+	public static Matrix Submatrix(Matrix m, List<Integer> listOfRows, List<Integer> listOfColumns, boolean removeThese) {
+		/*Pseudo
+		 * If data is to be removed 
+		 * 		for all values in the grid
+		 * 			if(i is NOT EQUAL to any value in the listofRows && same for j) 
+		 * 				listOf<double> buffer.add(grid[i][j])
+		 * 			else nothing;
+		 * else data is to be preserved
+		 * 		for all values in the grid
+		 * 			if(i is EQUAL to any value in the listofRows || same for j) 
+		 * 				listOf<double> buffer.add(grid[i][j])
+		 * 			else nothing;
+		 */
+		
+		// Removed row/columns will be the ones above the sent values, arrays start from 0
+		// OutOfBound values in the row/column list will return garbled Matrix due to reduced size and zero removal
+		if (m.getValidity() && m.getRowSize() > listOfRows.size() && m.getColumnSize() > listOfColumns.size()) {
+			List<Double> buffer = new ArrayList<Double>();
 
-			int row = m.getRow();
-			int column = m.getColumn();
+			int row = m.getRowSize();
+			int column = m.getColumnSize();
 			double[][] grid = m.getGrid();
-			double[][] newGrid = grid;
+			int newR = row-listOfRows.size();
+			int newC = column-listOfColumns.size();
+			double[][] newGrid = new double[newR][newC];
 
+			// Data filter
+			if(removeThese) {
+				// Simple cyclic increment
+				// Cycle through the row for each column
+				for(int ro = 0; ro < row; ro++) {
+					for (int col = 0; col < column; col++) {
+						if(!listOfRows.contains(ro) && !listOfColumns.contains(col)) {
+							buffer.add(grid[ro][col]);
+						}
+					}// --Column loop end
+				}// --Row loop end
 
-			// Shifting rows to top
-			for(int ro = delRow; ro+1 < row; ro++) {
-				for(int col = 0; col < column; col++) {
-					newGrid[ro][col] = grid[ro+1][col];
-				}
+			} else {
+				// Simple cyclic increment
+				// Cycle through the row for each column
+				for(int ro = 0; ro < row; ro++) {
+					for (int col = 0; col < column; col++) {
+						if(listOfRows.contains(ro) || listOfColumns.contains(col)) {
+							buffer.add(grid[ro][col]);
+						}
+					}// --Column loop end
+				}// --Row loop end
 			}
 
-			// Shifting columns to left
-			for(int ro = 0; ro < row; ro++) {
-				for(int col = delColumn; col+1 < column; col++) {
-					newGrid[ro][col] = grid[ro][col+1];
-				}
-			}
+			// Grid reconstruction
+			int index = 0;
+
+			// Simple cyclic increment
+			// Cycle through the row for each column
+			for(int ro = 0; ro < newR; ro++) {
+				for (int col = 0; col < newC; col++) {
+					newGrid[ro][col] = buffer.get(index);
+					index++;
+				}// --Column loop end
+			}// --Row loop end
 
 			Matrix s = new Matrix(newGrid);
-			s.ChangeSize(row-1, column-1);
 			return s;
 		}
 		return error;
 	}
 	
-	//Minor(first, second, etc) Cofactors, Determinant, Inverse
 }
