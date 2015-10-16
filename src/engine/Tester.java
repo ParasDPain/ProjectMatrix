@@ -11,14 +11,20 @@ import framework.Operator;
 public class Tester {
 
 	public static void main(String[] args) {
-
+		
+		displayMatrix(Operator.Solve("A*B+C-D"));
+		
+		/*
 		Scanner scanner = new Scanner (System.in);
-		Matrix m = new Matrix(8);
+		Matrix m = inputMatrix(scanner);
 		displayMatrix(m);
-		displayMatrix(test_Submatrix(m));
+		Matrix n = inputMatrix(scanner);
+		displayMatrix(n);
+		
+		test_Operations(m, n);
 		
 		scanner.close();
-
+		*/
 	}
 
 	private static Matrix test_Submatrix(Matrix m) {

@@ -1,5 +1,8 @@
 package framework;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // Add error checks (use false returns in boolean functions)
 public class Matrix {
 
@@ -96,12 +99,12 @@ public class Matrix {
 	}
 
 	// Construct a square identity matrix with size r
-	public Matrix(int r) {
+	public Matrix(int size) {
 		// If invalid input, a null object is created with Validity set to false
-		if(IsSizeValid(r,r)) {
+		if(IsSizeValid(size,size)) {
 
-			setRowSize(r);
-			setColumnSize(r);
+			setRowSize(size);
+			setColumnSize(size);
 			double[][] newGrid = new double[rowSize][columnSize];
 
 			// Simple cyclic increment
@@ -109,6 +112,28 @@ public class Matrix {
 			for(int ro = 0; ro < rowSize; ro++) {
 				for (int col = 0; col < columnSize; col++) {
 					newGrid[ro][col] = (ro == col ? 1 : 0);
+				}// --Column loop end
+			}// --Row loop end
+
+			setGrid(newGrid);
+		}
+
+	}
+	
+	// Construct a square matrix with size r and rounded pseudo-random values 
+	public Matrix(int size, long range) {
+		// If invalid input, a null object is created with Validity set to false
+		if(IsSizeValid(size,size)) {
+
+			setRowSize(size);
+			setColumnSize(size);
+			double[][] newGrid = new double[rowSize][columnSize];
+
+			// Simple cyclic increment
+			// Cycle through the row for each column	
+			for(int ro = 0; ro < rowSize; ro++) {
+				for (int col = 0; col < columnSize; col++) {
+					newGrid[ro][col] = Math.round(Math.random() * range);
 				}// --Column loop end
 			}// --Row loop end
 
@@ -128,7 +153,7 @@ public class Matrix {
 
 			try {
 				grid[posX][posY] = value;
-			} catch (IndexOutOfBoundsException e) {;
+			} catch (IndexOutOfBoundsException e) {
 			return false;
 			}
 
@@ -166,6 +191,50 @@ public class Matrix {
 		}
 		return 0;
 	}
+	
+	// Returns an array of grid values in r1c1,r2c2... style
+	public double[] GetGridAsArray() {
+        if(this.getValidity()) {
+        	
+            int Row = getRowSize();
+            int Column = getColumnSize();
+            double[] newArray = new double[Row*Column];
+            double[][] Grid = getGrid();
+
+            int index = 0;
+
+            for(int ro = 0; ro < Row; ro++) {
+                for (int col = 0; col < Column; col++) {
+                    newArray[index] = Grid[ro][col];
+                    index++;
+                }// --Column loop end
+            }// --Row loop end
+            
+            return newArray;
+        }
+        return new double[0];
+    }
+
+	// Returns an List of grid values in r1c1,r2c2... style
+    public List<Double> GetGridAsList() {
+    	
+        List<Double> newList = new ArrayList<>();
+        if(this.getValidity()) {
+        	
+            int Row = getRowSize();
+            int Column = getColumnSize();
+            double[][] Grid = getGrid();
+
+            for(int ro = 0; ro < Row; ro++) {
+                for (int col = 0; col < Column; col++) {
+                    newList.add(Grid[ro][col]);
+                }// --Column loop end
+            }// --Row loop end
+            
+            return newList;
+        }
+        return newList;
+    }
 
 	// Change row, column and grid size
 	public boolean ChangeSize(int newR, int newC) {
@@ -228,6 +297,11 @@ public class Matrix {
 			}
 		}
 		return false;
+	}
+	
+	// Checks whether the matrix is square or not
+	public boolean IsSquare(){
+		return this.getRowSize() == this.getColumnSize();
 	}
 
 	/* ------------------------
