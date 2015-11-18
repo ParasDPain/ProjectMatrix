@@ -11,8 +11,15 @@ import framework.Operator;
 public class Tester {
 
 	public static void main(String[] args) {
-		
-		displayMatrix(Operator.Solve("A*B+C-D"));
+
+		Matrix variables[] = new Matrix[4];
+        variables[0] = new Matrix(5, (long)10);
+        variables[1] = new Matrix(5, (long)10);
+        variables[2] = new Matrix(5, (long)10);
+        variables[3] = new Matrix(5, (long)10);
+
+        String varNames[] = {"A", "B", "C", "D"};
+        displayMatrix(Operator.Solve("A*(B/C+D)", varNames, variables));
 		
 		/*
 		Scanner scanner = new Scanner (System.in);

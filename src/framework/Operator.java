@@ -1,5 +1,7 @@
 package framework;
 
+import java.util.List;
+
 import nodes.ExpressionNode;
 import parser.EvaluationException;
 import parser.Parser;
@@ -20,29 +22,28 @@ public class Operator {
 	 * ------------------------ */
 
 	// Parse and solve an equation of matrices
-	public static Matrix Solve(String input){
+	public static Matrix Solve(String input, String varNames[], Matrix variables[]){
 		Parser parser = new Parser();
 	    try
 	    {
 	      ExpressionNode expr = parser.parse(input);
-	      // Set Variables if any exist
-	      expr.accept(new SetVariable("A", new Matrix(3, (long)10)));
-	      expr.accept(new SetVariable("B", new Matrix(3, (long)10)));
-	      expr.accept(new SetVariable("C", new Matrix(3, (long)10)));
-	      expr.accept(new SetVariable("D", new Matrix(3, (long)10)));
-	      return expr.getValue();
-	      
+
+	      // Set variables for each entry in the list
+            if(varNames.length == variables.length){
+                for (int i=0;i<varNames.length;i++) {
+                    expr.accept(new SetVariable(varNames[i], variables[i]));
+                }
+                // Evaluate the expression
+                return expr.getValue();
+            }
+            else return error;
 	    }
-	    catch (ParserException e)
+	    catch (ParserException | EvaluationException e)
 	    {
 	      System.out.println(e.getMessage());
 	    }
-	    catch (EvaluationException e)
-	    {
-	      System.out.println(e.getMessage());
-	    }
-	    
-	    return error;
+
+        return error;
 	}
 
 	// Returns an invalid Matrix if the caller is sending invalid data
